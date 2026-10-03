@@ -10,4 +10,6 @@ public interface IProductService
     ProductForReadDto CreateProduct(ProductForCreateDto dto);
     void UpdateProduct(int id, ProductForUpdateDto dto);
     void DeleteProduct(int id);
+    List<ProductForReadDto> SearchProductsByName(string name); 
+    ProductStatsDto GetStats();                             
 }

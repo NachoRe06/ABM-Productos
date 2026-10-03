@@ -31,23 +31,34 @@ public class ProductRepository : IProductRepository
 
     public void AddProduct(Product product)
     {
-        int nextId = _products.Count > 0 ? _products.Max(p => p.Id) + 1 : 1;
-        product.Id = nextId;
+        product.Id = _products.Any() ? _products.Max(p => p.Id) + 1 : 1;
         _products.Add(product);
     }
 
     public void UpdateProduct(Product product)
     {
-        var existingProduct = GetProductById(product.Id);
-        if (existingProduct != null)
+        var existing = GetProductById(product.Id);
+        if (existing is not null)
         {
-            existingProduct.Name = product.Name;
-            existingProduct.Price = product.Price;
+            existing.Name = product.Name;
+            existing.Price = product.Price;
         }
     }
 
     public void DeleteProduct(Product product)
     {
         _products.Remove(product);
+    }
+
+    public List<Product> SearchProductsByName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return _products;
+        }
+
+        return _products
+            .Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+            .ToList();
     }
 }

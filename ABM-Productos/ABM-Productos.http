@@ -1,6 +1,58 @@
-@ABM_Productos_HostAddress = http://localhost:5106
+@ABM_Productos_HostAddress = https://localhost:7084
 
-GET {{ABM_Productos_HostAddress}}/weatherforecast/
+### 1. GET todos los productos (Espera: 200 con 10 productos)
+GET {{ABM_Productos_HostAddress}}/api/products
 Accept: application/json
 
-###
+### 2. GET producto por id existente (Espera: 200 con el monitor)
+GET {{ABM_Productos_HostAddress}}/api/products/3
+Accept: application/json
+
+### 3. GET producto por id inexistente (Espera: 404 Not Found)
+GET {{ABM_Productos_HostAddress}}/api/products/999
+Accept: application/json
+
+### 4. POST crear producto nuevo (Espera: 201 Created con Id asignado)
+POST {{ABM_Productos_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Pad Mouse XXL",
+  "price": 1500.00
+}
+
+### 5. GET verificar que se agregó (Espera: 200 con el nuevo producto al final)
+GET {{ABM_Productos_HostAddress}}/api/products
+Accept: application/json
+
+### 6. PUT actualizar producto existente (Espera: 204 No Content)
+PUT {{ABM_Productos_HostAddress}}/api/products/1
+Content-Type: application/json
+
+{
+  "name": "Mouse inalámbrico recargable",
+  "price": 4500.00
+}
+
+### 7. PUT producto inexistente (Espera: 404 Not Found)
+PUT {{ABM_Productos_HostAddress}}/api/products/999
+Content-Type: application/json
+
+{
+  "name": "Fantasma",
+  "price": 0.00
+}
+
+### 8. DELETE borrar producto existente (Espera: 204 No Content)
+DELETE {{ABM_Productos_HostAddress}}/api/products/2
+
+### 9. DELETE el mismo producto de nuevo (Espera: 404 Not Found)
+DELETE {{ABM_Productos_HostAddress}}/api/products/2
+
+### Buscar producto por nombre (devuelve el teclado)
+GET {{ABM_Productos_HostAddress}}/api/products/search?name=teclado
+Accept: application/json
+
+### Obtener estadísticas
+GET {{ABM_Productos_HostAddress}}/api/products/stats
+Accept: application/json
